@@ -1,0 +1,63 @@
+# ==================================================
+# Python (backend)
+# ==================================================
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.Python
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+.ipynb_checkpoints/
+
+# ==================================================
+# Node / React (frontend)
+# ==================================================
+node_modules/
+dist/
+dist-ssr/
+.vite/
+.turbo/
+*.tsbuildinfo
+
+# ==================================================
+# Environment variables
+# ==================================================
+.env
+.env.*
+!.env.example
+
+# ==================================================
+# Generated / runtime files
+# ==================================================
+*.log
+logs/
+
+# ==================================================
+# SQLite database files
+# ==================================================
+*.db
+*.sqlite
+*.sqlite3
+
+# ==================================================
+# OS / editor
+# ==================================================
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# ==================================================
+# Explicitly NOT ignored (kept for clarity — do not add these below)
+# ==================================================
+# docs/            -> documentation is tracked
+# backend/scripts/ -> seed/ingestion scripts are tracked
+# .gitkeep          -> intentionally tracked to preserve empty directories
+# .env.example       -> tracked as a safe placeholder
