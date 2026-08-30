@@ -1,0 +1,59 @@
+{
+  "data": [
+    {
+      "hospital_name": "LLC Smith",
+      "encounter_count": 44,
+      "volume_rank": 1
+    },
+    {
+      "hospital_name": "Ltd Smith",
+      "encounter_count": 39,
+      "volume_rank": 2
+    },
+    {
+      "hospital_name": "Smith Ltd",
+      "encounter_count": 38,
+      "volume_rank": 3
+    },
+    {
+      "hospital_name": "Johnson PLC",
+      "encounter_count": 36,
+      "volume_rank": 4
+    },
+    {
+      "hospital_name": "Smith PLC",
+      "encounter_count": 35,
+      "volume_rank": 5
+    },
+    {
+      "hospital_name": "Smith Group",
+      "encounter_count": 34,
+      "volume_rank": 6
+    },
+    {
+      "hospital_name": "Williams PLC",
+      "encounter_count": 34,
+      "volume_rank": 6
+    },
+    {
+      "hospital_name": "Group Smith",
+      "encounter_count": 33,
+      "volume_rank": 8
+    },
+    {
+      "hospital_name": "Johnson Group",
+      "encounter_count": 32,
+      "volume_rank": 9
+    },
+    {
+      "hospital_name": "Smith Inc",
+      "encounter_count": 32,
+      "volume_rank": 9
+    }
+  ],
+  "meta": {
+    "row_count": 10,
+    "generated_at": "2026-08-23T10:00:00Z",
+    "note": null
+  }
+}

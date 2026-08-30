@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Healthcare Analytics">
+  <rect width="32" height="32" rx="7" fill="#0E7490"/>
+  <path d="M5 18h4.2l2.6-7.4 3.6 12.2 3.1-9.1 2 4.3H27"
+        fill="none" stroke="#CFFAFE" stroke-width="2.4"
+        stroke-linecap="round" stroke-linejoin="round"/>
+</svg>

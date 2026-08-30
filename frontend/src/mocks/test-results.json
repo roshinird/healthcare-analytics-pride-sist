@@ -1,0 +1,54 @@
+{
+  "data": [
+    {
+      "admission_type": "Emergency",
+      "test_result": "Abnormal",
+      "encounter_count": 6154
+    },
+    {
+      "admission_type": "Emergency",
+      "test_result": "Inconclusive",
+      "encounter_count": 6081
+    },
+    {
+      "admission_type": "Emergency",
+      "test_result": "Normal",
+      "encounter_count": 6061
+    },
+    {
+      "admission_type": "Urgent",
+      "test_result": "Abnormal",
+      "encounter_count": 6136
+    },
+    {
+      "admission_type": "Urgent",
+      "test_result": "Inconclusive",
+      "encounter_count": 6071
+    },
+    {
+      "admission_type": "Urgent",
+      "test_result": "Normal",
+      "encounter_count": 6051
+    },
+    {
+      "admission_type": "Elective",
+      "test_result": "Abnormal",
+      "encounter_count": 6116
+    },
+    {
+      "admission_type": "Elective",
+      "test_result": "Inconclusive",
+      "encounter_count": 6050
+    },
+    {
+      "admission_type": "Elective",
+      "test_result": "Normal",
+      "encounter_count": 6030
+    }
+  ],
+  "meta": {
+    "row_count": 9,
+    "generated_at": "2026-08-23T10:00:00Z",
+    "note": null
+  }
+}

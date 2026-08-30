@@ -1,0 +1,28 @@
+/*
+ * Design tokens — verbatim from docs/09-ui-design-system.md §2.
+ * These values are the single source of truth for colour in this application.
+ * tailwind.config.js maps them to semantic utility names; chartTheme.js reads
+ * the chart series colours from the same block so a Recharts series and a
+ * Tailwind class can never drift apart.
+ */
+:root {
+  --color-bg: #f8fafc; /* page background, slate-50 */
+  --color-surface: #ffffff; /* card background */
+  --color-border: #e2e8f0; /* slate-200 */
+  --color-text-primary: #0f172a; /* slate-900 */
+  --color-text-secondary: #64748b; /* slate-500 */
+
+  --color-primary: #0e7490; /* teal-700 — primary accent */
+  --color-primary-light: #cffafe; /* teal-100 — chart fill / hover */
+
+  --color-success: #15803d; /* green-700 — "Normal" test result */
+  --color-warning: #b45309; /* amber-700 — "Inconclusive" */
+  --color-danger: #b91c1c; /* red-700 — "Abnormal", data-quality flags */
+
+  --color-chart-1: #0e7490; /* teal */
+  --color-chart-2: #7c3aed; /* violet */
+  --color-chart-3: #c2410c; /* orange */
+  --color-chart-4: #0369a1; /* blue */
+  --color-chart-5: #4d7c0f; /* olive */
+  --color-chart-6: #a21caf; /* magenta */
+}
