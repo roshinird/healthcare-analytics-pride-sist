@@ -1,0 +1,80 @@
+{
+  "data": {
+    "age_groups": [
+      {
+        "age_group": "Pediatric (0-17)",
+        "encounter_count": 613,
+        "percentage_share": 1.12
+      },
+      {
+        "age_group": "Adult (18-64)",
+        "encounter_count": 33989,
+        "percentage_share": 62.08
+      },
+      {
+        "age_group": "Senior (65+)",
+        "encounter_count": 20148,
+        "percentage_share": 36.8
+      }
+    ],
+    "genders": [
+      {
+        "gender": "Male",
+        "encounter_count": 27473,
+        "percentage_share": 50.18
+      },
+      {
+        "gender": "Female",
+        "encounter_count": 27277,
+        "percentage_share": 49.82
+      }
+    ],
+    "blood_types": [
+      {
+        "blood_type": "A+",
+        "encounter_count": 6964,
+        "percentage_share": 12.72
+      },
+      {
+        "blood_type": "B+",
+        "encounter_count": 6920,
+        "percentage_share": 12.64
+      },
+      {
+        "blood_type": "AB+",
+        "encounter_count": 6887,
+        "percentage_share": 12.58
+      },
+      {
+        "blood_type": "O+",
+        "encounter_count": 6874,
+        "percentage_share": 12.56
+      },
+      {
+        "blood_type": "A-",
+        "encounter_count": 6838,
+        "percentage_share": 12.49
+      },
+      {
+        "blood_type": "B-",
+        "encounter_count": 6794,
+        "percentage_share": 12.41
+      },
+      {
+        "blood_type": "AB-",
+        "encounter_count": 6739,
+        "percentage_share": 12.31
+      },
+      {
+        "blood_type": "O-",
+        "encounter_count": 6734,
+        "percentage_share": 12.3
+      }
+    ]
+  },
+  "meta": {
+    "row_count": 54750,
+    "generated_at": "2026-08-23T10:00:00Z",
+    "note": null
+  }
+}

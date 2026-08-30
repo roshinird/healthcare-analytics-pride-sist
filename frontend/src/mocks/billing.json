@@ -1,0 +1,73 @@
+{
+  "data": {
+    "by_insurance_provider": [
+      {
+        "insurance_provider": "Cigna",
+        "encounter_count": 11078,
+        "avg_billing": 25702.41,
+        "total_billing": 284731297.98,
+        "pct_of_total_billing": 20.41
+      },
+      {
+        "insurance_provider": "Medicare",
+        "encounter_count": 10988,
+        "avg_billing": 25612.08,
+        "total_billing": 281425535.04,
+        "pct_of_total_billing": 20.17
+      },
+      {
+        "insurance_provider": "UnitedHealthcare",
+        "encounter_count": 10944,
+        "avg_billing": 25498.77,
+        "total_billing": 279058538.88,
+        "pct_of_total_billing": 20.0
+      },
+      {
+        "insurance_provider": "Blue Cross",
+        "encounter_count": 10879,
+        "avg_billing": 25441.36,
+        "total_billing": 276776555.44,
+        "pct_of_total_billing": 19.84
+      },
+      {
+        "insurance_provider": "Aetna",
+        "encounter_count": 10753,
+        "avg_billing": 25389.14,
+        "total_billing": 273009422.42,
+        "pct_of_total_billing": 19.57
+      }
+    ],
+    "by_admission_type": [
+      {
+        "admission_type": "Elective",
+        "encounter_count": 18317,
+        "avg_billing": 25612.44
+      },
+      {
+        "admission_type": "Urgent",
+        "encounter_count": 18201,
+        "avg_billing": 25534.9
+      },
+      {
+        "admission_type": "Emergency",
+        "encounter_count": 18124,
+        "avg_billing": 25470.12
+      }
+    ],
+    "above_average": {
+      "above_average_count": 27244,
+      "overall_avg_billing": 25529.84
+    },
+    "statistical_outliers": {
+      "outlier_count": 0,
+      "lower_bound": -20122.75,
+      "upper_bound": 71465.29
+    },
+    "excluded_invalid_billing_count": 108
+  },
+  "meta": {
+    "row_count": 54750,
+    "generated_at": "2026-08-23T10:00:00Z",
+    "note": null
+  }
+}
