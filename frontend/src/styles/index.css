@@ -1,0 +1,118 @@
+@import './tokens.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    @apply bg-canvas text-ink antialiased;
+    font-family:
+      Inter,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+  }
+
+  /* Every figure in this dashboard is a number in a column. Tabular lining
+     figures stop digits from jittering as values animate or filters change. */
+  .tnum,
+  th,
+  td {
+    font-variant-numeric: tabular-nums lining-nums;
+    font-feature-settings: 'tnum' 1;
+  }
+
+  :focus-visible {
+    @apply outline-none ring-2 ring-brand ring-offset-2 ring-offset-canvas;
+  }
+
+  ::selection {
+    background: var(--color-primary-light);
+    color: var(--color-primary);
+  }
+}
+
+@layer components {
+  /* Card shell — docs/09-ui-design-system.md §4/§5. */
+  .card {
+    @apply rounded-xl border border-line bg-surface shadow-card;
+  }
+
+  /* The eyebrow that labels each card with the analytics question it answers.
+     This is the dashboard's structural device: it exists because
+     docs/01-requirements.md VR-3 requires every chart to map to exactly one
+     documented question, and it makes that mapping visible. */
+  .eyebrow {
+    @apply inline-flex items-center gap-1.5 text-[11px] font-semibold uppercase tracking-[0.08em] text-ink-muted;
+  }
+
+  .qtag {
+    @apply inline-flex h-[18px] min-w-[26px] items-center justify-center rounded-[5px] bg-brand-light px-1.5 text-[10px] font-bold tracking-tight text-brand;
+  }
+
+  .field-label {
+    @apply mb-1.5 block text-[11px] font-semibold uppercase tracking-[0.06em] text-ink-muted;
+  }
+
+  .field {
+    @apply w-full rounded-md border border-line bg-surface px-3 py-1.5 text-sm text-ink transition
+           focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand-light;
+  }
+
+  .btn-primary {
+    @apply inline-flex items-center gap-2 rounded-md bg-brand px-4 py-2 text-sm font-medium text-white
+           transition hover:opacity-90 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .btn-secondary {
+    @apply inline-flex items-center gap-2 rounded-md border border-line bg-surface px-3 py-1.5 text-sm
+           font-medium text-ink transition hover:border-brand hover:text-brand
+           disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  .chip {
+    @apply inline-flex items-center gap-1 rounded-full bg-brand-light px-3 py-1 text-xs font-medium text-brand;
+  }
+
+  .skeleton {
+    @apply relative overflow-hidden rounded bg-slate-200/70;
+  }
+
+  .skeleton::after {
+    content: '';
+    @apply absolute inset-0 animate-sweep;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgb(255 255 255 / 0.65),
+      transparent
+    );
+  }
+}
+
+/* Recharts leaves a focus outline on the SVG wrapper on click; we keep keyboard
+   focus visible but drop the mouse-click artefact. */
+.recharts-wrapper:focus:not(:focus-visible) {
+  outline: none;
+}
+
+.recharts-surface {
+  overflow: visible;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

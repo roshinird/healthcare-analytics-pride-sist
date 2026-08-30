@@ -1,0 +1,769 @@
+{
+  "kpis": {
+    "data": {
+      "total_encounters": 54750,
+      "avg_length_of_stay": 15.46,
+      "avg_billing_amount": 25529.84,
+      "earliest_admission": "2019-05-08",
+      "latest_admission": "2024-05-07"
+    },
+    "meta": {
+      "row_count": 1,
+      "generated_at": "2026-08-23T10:00:00Z",
+      "note": null
+    }
+  },
+  "admissions-trend": {
+    "data": [
+      {
+        "month": "2019-05",
+        "encounter_count": 692,
+        "prev_month_count": null,
+        "pct_change": null,
+        "rolling_avg_3mo": null
+      },
+      {
+        "month": "2019-06",
+        "encounter_count": 911,
+        "prev_month_count": 692,
+        "pct_change": 31.65,
+        "rolling_avg_3mo": null
+      },
+      {
+        "month": "2019-07",
+        "encounter_count": 889,
+        "prev_month_count": 911,
+        "pct_change": -2.41,
+        "rolling_avg_3mo": 830.67
+      },
+      {
+        "month": "2019-08",
+        "encounter_count": 912,
+        "prev_month_count": 889,
+        "pct_change": 2.59,
+        "rolling_avg_3mo": 904.0
+      },
+      {
+        "month": "2019-09",
+        "encounter_count": 895,
+        "prev_month_count": 912,
+        "pct_change": -1.86,
+        "rolling_avg_3mo": 898.67
+      },
+      {
+        "month": "2019-10",
+        "encounter_count": 920,
+        "prev_month_count": 895,
+        "pct_change": 2.79,
+        "rolling_avg_3mo": 909.0
+      },
+      {
+        "month": "2019-11",
+        "encounter_count": 845,
+        "prev_month_count": 920,
+        "pct_change": -8.15,
+        "rolling_avg_3mo": 886.67
+      },
+      {
+        "month": "2019-12",
+        "encounter_count": 899,
+        "prev_month_count": 845,
+        "pct_change": 6.39,
+        "rolling_avg_3mo": 888.0
+      },
+      {
+        "month": "2020-01",
+        "encounter_count": 884,
+        "prev_month_count": 899,
+        "pct_change": -1.67,
+        "rolling_avg_3mo": 876.0
+      },
+      {
+        "month": "2020-02",
+        "encounter_count": 921,
+        "prev_month_count": 884,
+        "pct_change": 4.19,
+        "rolling_avg_3mo": 901.33
+      },
+      {
+        "month": "2020-03",
+        "encounter_count": 952,
+        "prev_month_count": 921,
+        "pct_change": 3.37,
+        "rolling_avg_3mo": 919.0
+      },
+      {
+        "month": "2020-04",
+        "encounter_count": 951,
+        "prev_month_count": 952,
+        "pct_change": -0.11,
+        "rolling_avg_3mo": 941.33
+      },
+      {
+        "month": "2020-05",
+        "encounter_count": 927,
+        "prev_month_count": 951,
+        "pct_change": -2.52,
+        "rolling_avg_3mo": 943.33
+      },
+      {
+        "month": "2020-06",
+        "encounter_count": 950,
+        "prev_month_count": 927,
+        "pct_change": 2.48,
+        "rolling_avg_3mo": 942.67
+      },
+      {
+        "month": "2020-07",
+        "encounter_count": 901,
+        "prev_month_count": 950,
+        "pct_change": -5.16,
+        "rolling_avg_3mo": 926.0
+      },
+      {
+        "month": "2020-08",
+        "encounter_count": 938,
+        "prev_month_count": 901,
+        "pct_change": 4.11,
+        "rolling_avg_3mo": 929.67
+      },
+      {
+        "month": "2020-09",
+        "encounter_count": 904,
+        "prev_month_count": 938,
+        "pct_change": -3.62,
+        "rolling_avg_3mo": 914.33
+      },
+      {
+        "month": "2020-10",
+        "encounter_count": 854,
+        "prev_month_count": 904,
+        "pct_change": -5.53,
+        "rolling_avg_3mo": 898.67
+      },
+      {
+        "month": "2020-11",
+        "encounter_count": 856,
+        "prev_month_count": 854,
+        "pct_change": 0.23,
+        "rolling_avg_3mo": 871.33
+      },
+      {
+        "month": "2020-12",
+        "encounter_count": 893,
+        "prev_month_count": 856,
+        "pct_change": 4.32,
+        "rolling_avg_3mo": 867.67
+      },
+      {
+        "month": "2021-01",
+        "encounter_count": 903,
+        "prev_month_count": 893,
+        "pct_change": 1.12,
+        "rolling_avg_3mo": 884.0
+      },
+      {
+        "month": "2021-02",
+        "encounter_count": 892,
+        "prev_month_count": 903,
+        "pct_change": -1.22,
+        "rolling_avg_3mo": 896.0
+      },
+      {
+        "month": "2021-03",
+        "encounter_count": 954,
+        "prev_month_count": 892,
+        "pct_change": 6.95,
+        "rolling_avg_3mo": 916.33
+      },
+      {
+        "month": "2021-04",
+        "encounter_count": 963,
+        "prev_month_count": 954,
+        "pct_change": 0.94,
+        "rolling_avg_3mo": 936.33
+      },
+      {
+        "month": "2021-05",
+        "encounter_count": 904,
+        "prev_month_count": 963,
+        "pct_change": -6.13,
+        "rolling_avg_3mo": 940.33
+      },
+      {
+        "month": "2021-06",
+        "encounter_count": 912,
+        "prev_month_count": 904,
+        "pct_change": 0.88,
+        "rolling_avg_3mo": 926.33
+      },
+      {
+        "month": "2021-07",
+        "encounter_count": 918,
+        "prev_month_count": 912,
+        "pct_change": 0.66,
+        "rolling_avg_3mo": 911.33
+      },
+      {
+        "month": "2021-08",
+        "encounter_count": 880,
+        "prev_month_count": 918,
+        "pct_change": -4.14,
+        "rolling_avg_3mo": 903.33
+      },
+      {
+        "month": "2021-09",
+        "encounter_count": 936,
+        "prev_month_count": 880,
+        "pct_change": 6.36,
+        "rolling_avg_3mo": 911.33
+      },
+      {
+        "month": "2021-10",
+        "encounter_count": 919,
+        "prev_month_count": 936,
+        "pct_change": -1.82,
+        "rolling_avg_3mo": 911.67
+      },
+      {
+        "month": "2021-11",
+        "encounter_count": 906,
+        "prev_month_count": 919,
+        "pct_change": -1.41,
+        "rolling_avg_3mo": 920.33
+      },
+      {
+        "month": "2021-12",
+        "encounter_count": 914,
+        "prev_month_count": 906,
+        "pct_change": 0.88,
+        "rolling_avg_3mo": 913.0
+      },
+      {
+        "month": "2022-01",
+        "encounter_count": 887,
+        "prev_month_count": 914,
+        "pct_change": -2.95,
+        "rolling_avg_3mo": 902.33
+      },
+      {
+        "month": "2022-02",
+        "encounter_count": 886,
+        "prev_month_count": 887,
+        "pct_change": -0.11,
+        "rolling_avg_3mo": 895.67
+      },
+      {
+        "month": "2022-03",
+        "encounter_count": 940,
+        "prev_month_count": 886,
+        "pct_change": 6.09,
+        "rolling_avg_3mo": 904.33
+      },
+      {
+        "month": "2022-04",
+        "encounter_count": 964,
+        "prev_month_count": 940,
+        "pct_change": 2.55,
+        "rolling_avg_3mo": 930.0
+      },
+      {
+        "month": "2022-05",
+        "encounter_count": 906,
+        "prev_month_count": 964,
+        "pct_change": -6.02,
+        "rolling_avg_3mo": 936.67
+      },
+      {
+        "month": "2022-06",
+        "encounter_count": 936,
+        "prev_month_count": 906,
+        "pct_change": 3.31,
+        "rolling_avg_3mo": 935.33
+      },
+      {
+        "month": "2022-07",
+        "encounter_count": 931,
+        "prev_month_count": 936,
+        "pct_change": -0.53,
+        "rolling_avg_3mo": 924.33
+      },
+      {
+        "month": "2022-08",
+        "encounter_count": 874,
+        "prev_month_count": 931,
+        "pct_change": -6.12,
+        "rolling_avg_3mo": 913.67
+      },
+      {
+        "month": "2022-09",
+        "encounter_count": 877,
+        "prev_month_count": 874,
+        "pct_change": 0.34,
+        "rolling_avg_3mo": 894.0
+      },
+      {
+        "month": "2022-10",
+        "encounter_count": 855,
+        "prev_month_count": 877,
+        "pct_change": -2.51,
+        "rolling_avg_3mo": 868.67
+      },
+      {
+        "month": "2022-11",
+        "encounter_count": 907,
+        "prev_month_count": 855,
+        "pct_change": 6.08,
+        "rolling_avg_3mo": 879.67
+      },
+      {
+        "month": "2022-12",
+        "encounter_count": 880,
+        "prev_month_count": 907,
+        "pct_change": -2.98,
+        "rolling_avg_3mo": 880.67
+      },
+      {
+        "month": "2023-01",
+        "encounter_count": 928,
+        "prev_month_count": 880,
+        "pct_change": 5.45,
+        "rolling_avg_3mo": 905.0
+      },
+      {
+        "month": "2023-02",
+        "encounter_count": 891,
+        "prev_month_count": 928,
+        "pct_change": -3.99,
+        "rolling_avg_3mo": 899.67
+      },
+      {
+        "month": "2023-03",
+        "encounter_count": 964,
+        "prev_month_count": 891,
+        "pct_change": 8.19,
+        "rolling_avg_3mo": 927.67
+      },
+      {
+        "month": "2023-04",
+        "encounter_count": 965,
+        "prev_month_count": 964,
+        "pct_change": 0.1,
+        "rolling_avg_3mo": 940.0
+      },
+      {
+        "month": "2023-05",
+        "encounter_count": 963,
+        "prev_month_count": 965,
+        "pct_change": -0.21,
+        "rolling_avg_3mo": 964.0
+      },
+      {
+        "month": "2023-06",
+        "encounter_count": 951,
+        "prev_month_count": 963,
+        "pct_change": -1.25,
+        "rolling_avg_3mo": 959.67
+      },
+      {
+        "month": "2023-07",
+        "encounter_count": 932,
+        "prev_month_count": 951,
+        "pct_change": -2.0,
+        "rolling_avg_3mo": 948.67
+      },
+      {
+        "month": "2023-08",
+        "encounter_count": 906,
+        "prev_month_count": 932,
+        "pct_change": -2.79,
+        "rolling_avg_3mo": 929.67
+      },
+      {
+        "month": "2023-09",
+        "encounter_count": 935,
+        "prev_month_count": 906,
+        "pct_change": 3.2,
+        "rolling_avg_3mo": 924.33
+      },
+      {
+        "month": "2023-10",
+        "encounter_count": 863,
+        "prev_month_count": 935,
+        "pct_change": -7.7,
+        "rolling_avg_3mo": 901.33
+      },
+      {
+        "month": "2023-11",
+        "encounter_count": 859,
+        "prev_month_count": 863,
+        "pct_change": -0.46,
+        "rolling_avg_3mo": 885.67
+      },
+      {
+        "month": "2023-12",
+        "encounter_count": 906,
+        "prev_month_count": 859,
+        "pct_change": 5.47,
+        "rolling_avg_3mo": 876.0
+      },
+      {
+        "month": "2024-01",
+        "encounter_count": 904,
+        "prev_month_count": 906,
+        "pct_change": -0.22,
+        "rolling_avg_3mo": 889.67
+      },
+      {
+        "month": "2024-02",
+        "encounter_count": 922,
+        "prev_month_count": 904,
+        "pct_change": 1.99,
+        "rolling_avg_3mo": 910.67
+      },
+      {
+        "month": "2024-03",
+        "encounter_count": 957,
+        "prev_month_count": 922,
+        "pct_change": 3.8,
+        "rolling_avg_3mo": 927.67
+      },
+      {
+        "month": "2024-04",
+        "encounter_count": 962,
+        "prev_month_count": 957,
+        "pct_change": 0.52,
+        "rolling_avg_3mo": 947.0
+      },
+      {
+        "month": "2024-05",
+        "encounter_count": 204,
+        "prev_month_count": 962,
+        "pct_change": -78.79,
+        "rolling_avg_3mo": 707.67
+      }
+    ],
+    "meta": {
+      "row_count": 61,
+      "generated_at": "2026-08-23T10:00:00Z",
+      "note": null
+    }
+  },
+  "top-hospitals": {
+    "data": [
+      {
+        "hospital_name": "LLC Smith",
+        "encounter_count": 44,
+        "volume_rank": 1
+      },
+      {
+        "hospital_name": "Ltd Smith",
+        "encounter_count": 39,
+        "volume_rank": 2
+      },
+      {
+        "hospital_name": "Smith Ltd",
+        "encounter_count": 38,
+        "volume_rank": 3
+      },
+      {
+        "hospital_name": "Johnson PLC",
+        "encounter_count": 36,
+        "volume_rank": 4
+      },
+      {
+        "hospital_name": "Smith PLC",
+        "encounter_count": 35,
+        "volume_rank": 5
+      },
+      {
+        "hospital_name": "Smith Group",
+        "encounter_count": 34,
+        "volume_rank": 6
+      },
+      {
+        "hospital_name": "Williams PLC",
+        "encounter_count": 34,
+        "volume_rank": 6
+      },
+      {
+        "hospital_name": "Group Smith",
+        "encounter_count": 33,
+        "volume_rank": 8
+      },
+      {
+        "hospital_name": "Johnson Group",
+        "encounter_count": 32,
+        "volume_rank": 9
+      },
+      {
+        "hospital_name": "Smith Inc",
+        "encounter_count": 32,
+        "volume_rank": 9
+      }
+    ],
+    "meta": {
+      "row_count": 10,
+      "generated_at": "2026-08-23T10:00:00Z",
+      "note": null
+    }
+  },
+  "conditions": {
+    "data": [
+      {
+        "condition_name": "Arthritis",
+        "condition_category": "Chronic",
+        "encounter_count": 9377,
+        "percentage_share": 17.13,
+        "avg_length_of_stay": 15.55
+      },
+      {
+        "condition_name": "Diabetes",
+        "condition_category": "Chronic",
+        "encounter_count": 9323,
+        "percentage_share": 17.03,
+        "avg_length_of_stay": 15.47
+      },
+      {
+        "condition_name": "Hypertension",
+        "condition_category": "Chronic",
+        "encounter_count": 9241,
+        "percentage_share": 16.88,
+        "avg_length_of_stay": 15.61
+      },
+      {
+        "condition_name": "Obesity",
+        "condition_category": "Chronic",
+        "encounter_count": 9099,
+        "percentage_share": 16.62,
+        "avg_length_of_stay": 15.42
+      },
+      {
+        "condition_name": "Cancer",
+        "condition_category": "Acute",
+        "encounter_count": 8929,
+        "percentage_share": 16.31,
+        "avg_length_of_stay": 15.38
+      },
+      {
+        "condition_name": "Asthma",
+        "condition_category": "Chronic",
+        "encounter_count": 8781,
+        "percentage_share": 16.04,
+        "avg_length_of_stay": 15.29
+      }
+    ],
+    "meta": {
+      "row_count": 6,
+      "generated_at": "2026-08-23T10:00:00Z",
+      "note": null
+    }
+  },
+  "demographics": {
+    "data": {
+      "age_groups": [
+        {
+          "age_group": "Pediatric (0-17)",
+          "encounter_count": 613,
+          "percentage_share": 1.12
+        },
+        {
+          "age_group": "Adult (18-64)",
+          "encounter_count": 33989,
+          "percentage_share": 62.08
+        },
+        {
+          "age_group": "Senior (65+)",
+          "encounter_count": 20148,
+          "percentage_share": 36.8
+        }
+      ],
+      "genders": [
+        {
+          "gender": "Male",
+          "encounter_count": 27473,
+          "percentage_share": 50.18
+        },
+        {
+          "gender": "Female",
+          "encounter_count": 27277,
+          "percentage_share": 49.82
+        }
+      ],
+      "blood_types": [
+        {
+          "blood_type": "A+",
+          "encounter_count": 6964,
+          "percentage_share": 12.72
+        },
+        {
+          "blood_type": "B+",
+          "encounter_count": 6920,
+          "percentage_share": 12.64
+        },
+        {
+          "blood_type": "AB+",
+          "encounter_count": 6887,
+          "percentage_share": 12.58
+        },
+        {
+          "blood_type": "O+",
+          "encounter_count": 6874,
+          "percentage_share": 12.56
+        },
+        {
+          "blood_type": "A-",
+          "encounter_count": 6838,
+          "percentage_share": 12.49
+        },
+        {
+          "blood_type": "B-",
+          "encounter_count": 6794,
+          "percentage_share": 12.41
+        },
+        {
+          "blood_type": "AB-",
+          "encounter_count": 6739,
+          "percentage_share": 12.31
+        },
+        {
+          "blood_type": "O-",
+          "encounter_count": 6734,
+          "percentage_share": 12.3
+        }
+      ]
+    },
+    "meta": {
+      "row_count": 54750,
+      "generated_at": "2026-08-23T10:00:00Z",
+      "note": null
+    }
+  },
+  "billing": {
+    "data": {
+      "by_insurance_provider": [
+        {
+          "insurance_provider": "Cigna",
+          "encounter_count": 11078,
+          "avg_billing": 25702.41,
+          "total_billing": 284731297.98,
+          "pct_of_total_billing": 20.41
+        },
+        {
+          "insurance_provider": "Medicare",
+          "encounter_count": 10988,
+          "avg_billing": 25612.08,
+          "total_billing": 281425535.04,
+          "pct_of_total_billing": 20.17
+        },
+        {
+          "insurance_provider": "UnitedHealthcare",
+          "encounter_count": 10944,
+          "avg_billing": 25498.77,
+          "total_billing": 279058538.88,
+          "pct_of_total_billing": 20.0
+        },
+        {
+          "insurance_provider": "Blue Cross",
+          "encounter_count": 10879,
+          "avg_billing": 25441.36,
+          "total_billing": 276776555.44,
+          "pct_of_total_billing": 19.84
+        },
+        {
+          "insurance_provider": "Aetna",
+          "encounter_count": 10753,
+          "avg_billing": 25389.14,
+          "total_billing": 273009422.42,
+          "pct_of_total_billing": 19.57
+        }
+      ],
+      "by_admission_type": [
+        {
+          "admission_type": "Elective",
+          "encounter_count": 18317,
+          "avg_billing": 25612.44
+        },
+        {
+          "admission_type": "Urgent",
+          "encounter_count": 18201,
+          "avg_billing": 25534.9
+        },
+        {
+          "admission_type": "Emergency",
+          "encounter_count": 18124,
+          "avg_billing": 25470.12
+        }
+      ],
+      "above_average": {
+        "above_average_count": 27244,
+        "overall_avg_billing": 25529.84
+      },
+      "statistical_outliers": {
+        "outlier_count": 0,
+        "lower_bound": -20122.75,
+        "upper_bound": 71465.29
+      },
+      "excluded_invalid_billing_count": 108
+    },
+    "meta": {
+      "row_count": 54750,
+      "generated_at": "2026-08-23T10:00:00Z",
+      "note": null
+    }
+  },
+  "test-results": {
+    "data": [
+      {
+        "admission_type": "Emergency",
+        "test_result": "Abnormal",
+        "encounter_count": 6154
+      },
+      {
+        "admission_type": "Emergency",
+        "test_result": "Inconclusive",
+        "encounter_count": 6081
+      },
+      {
+        "admission_type": "Emergency",
+        "test_result": "Normal",
+        "encounter_count": 6061
+      },
+      {
+        "admission_type": "Urgent",
+        "test_result": "Abnormal",
+        "encounter_count": 6136
+      },
+      {
+        "admission_type": "Urgent",
+        "test_result": "Inconclusive",
+        "encounter_count": 6071
+      },
+      {
+        "admission_type": "Urgent",
+        "test_result": "Normal",
+        "encounter_count": 6051
+      },
+      {
+        "admission_type": "Elective",
+        "test_result": "Abnormal",
+        "encounter_count": 6116
+      },
+      {
+        "admission_type": "Elective",
+        "test_result": "Inconclusive",
+        "encounter_count": 6050
+      },
+      {
+        "admission_type": "Elective",
+        "test_result": "Normal",
+        "encounter_count": 6030
+      }
+    ],
+    "meta": {
+      "row_count": 9,
+      "generated_at": "2026-08-23T10:00:00Z",
+      "note": null
+    }
+  }
+}

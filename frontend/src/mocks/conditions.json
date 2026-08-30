@@ -1,0 +1,51 @@
+{
+  "data": [
+    {
+      "condition_name": "Arthritis",
+      "condition_category": "Chronic",
+      "encounter_count": 9377,
+      "percentage_share": 17.13,
+      "avg_length_of_stay": 15.55
+    },
+    {
+      "condition_name": "Diabetes",
+      "condition_category": "Chronic",
+      "encounter_count": 9323,
+      "percentage_share": 17.03,
+      "avg_length_of_stay": 15.47
+    },
+    {
+      "condition_name": "Hypertension",
+      "condition_category": "Chronic",
+      "encounter_count": 9241,
+      "percentage_share": 16.88,
+      "avg_length_of_stay": 15.61
+    },
+    {
+      "condition_name": "Obesity",
+      "condition_category": "Chronic",
+      "encounter_count": 9099,
+      "percentage_share": 16.62,
+      "avg_length_of_stay": 15.42
+    },
+    {
+      "condition_name": "Cancer",
+      "condition_category": "Acute",
+      "encounter_count": 8929,
+      "percentage_share": 16.31,
+      "avg_length_of_stay": 15.38
+    },
+    {
+      "condition_name": "Asthma",
+      "condition_category": "Chronic",
+      "encounter_count": 8781,
+      "percentage_share": 16.04,
+      "avg_length_of_stay": 15.29
+    }
+  ],
+  "meta": {
+    "row_count": 6,
+    "generated_at": "2026-08-23T10:00:00Z",
+    "note": null
+  }
+}

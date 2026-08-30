@@ -1,0 +1,10 @@
+# Healthcare Analytics — backend runtime dependencies
+# Every entry is justified against docs/02-tech-stack.md.
+# Adding anything here requires the "earns its place" justification in docs/02-tech-stack.md.
+
+fastapi==0.115.6          # web framework (docs/02-tech-stack.md)
+uvicorn[standard]==0.34.0 # ASGI server (docs/02-tech-stack.md)
+pydantic==2.10.4          # request/response validation (ships with FastAPI, pinned explicitly)
+pandas==2.2.3             # transformation layer (Dev B) — docs/02-tech-stack.md
+numpy==2.2.1              # IQR / percentile statistics (Dev B) — docs/02-tech-stack.md
+matplotlib==3.10.0        # SHOULD-HAVE server-side report PNG (Dev B) — docs/02-tech-stack.md

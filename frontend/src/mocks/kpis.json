@@ -1,0 +1,14 @@
+{
+  "data": {
+    "total_encounters": 54750,
+    "avg_length_of_stay": 15.46,
+    "avg_billing_amount": 25529.84,
+    "earliest_admission": "2019-05-08",
+    "latest_admission": "2024-05-07"
+  },
+  "meta": {
+    "row_count": 1,
+    "generated_at": "2026-08-23T10:00:00Z",
+    "note": null
+  }
+}

@@ -1,0 +1,26 @@
+# Render Blueprint — backend only, free tier, no paid add-ons (docs/11-deployment.md §4).
+# Render can also be configured entirely through its dashboard; this file makes the
+# configuration reproducible from a clean checkout.
+services:
+  - type: web
+    name: healthcare-analytics-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    # `python -m app.seed` is Dev B's ingestion entrypoint. It runs at build time so
+    # SQLite is rebuilt on every deploy — no database service, and no dependency on
+    # whether the free-tier disk persists. The `|| true` keeps Dev A's branch
+    # deployable before that script lands; the API then serves development
+    # fixtures and says so in every meta.note.
+    buildCommand: pip install -r requirements.txt && (python -m app.seed || true)
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: DATABASE_PATH
+        value: ./data/database/healthcare.db
+      - key: ENVIRONMENT
+        value: production
+      - key: CORS_ALLOWED_ORIGIN
+        # Set to the deployed frontend URL after the first frontend deploy,
+        # then redeploy the backend (docs/11-deployment.md §6).
+        sync: false
