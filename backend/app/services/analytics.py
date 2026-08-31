@@ -170,7 +170,7 @@ def transform_admissions_trend(
     Transform monthly admissions results.
 
     Adds the SHOULD-HAVE rolling 3-month average using Pandas and
-    maps the result to the frozen TrendPoint API contract.
+    maps the SQL/query-layer names to the frozen API contract.
     """
 
     df = _dataframe(records)
@@ -184,46 +184,50 @@ def transform_admissions_trend(
         errors="coerce",
     )
 
-    df = df.dropna(subset=["admission_month"])
+    df = df.dropna(
+        subset=["admission_month"]
+    )
 
     df = df.sort_values(
         "admission_month"
     ).reset_index(drop=True)
 
     df["rolling_avg_3mo"] = (
-    df["encounter_count"]
-    .rolling(
-        window=3,
-        min_periods=1,
+        df["encounter_count"]
+        .rolling(
+            window=3,
+            min_periods=1,
+        )
+        .mean()
+        .round(2)
     )
-    .mean()
-    .round(2)
-)
 
     df["admission_month"] = (
         df["admission_month"]
         .dt.strftime("%Y-%m")
     )
 
-    # Map the SQL/query-layer name to the frozen API name.
+    # Map SQL/query-layer names to the frozen API contract.
     result = pd.DataFrame({
         "month": df["admission_month"],
         "encounter_count": df["encounter_count"],
         "prev_month_count": df.get(
-            "prev_month_count",
+            "previous_month_count",
             pd.Series([None] * len(df)),
         ),
         "pct_change": df.get(
-            "pct_change",
+            "mom_change_percent",
             pd.Series([None] * len(df)),
         ),
         "rolling_avg_3mo": df["rolling_avg_3mo"],
     })
 
-    result = _round_numeric(result, 2)
+    result = _round_numeric(
+        result,
+        2,
+    )
 
     return _records(result)
-
 
 # ============================================================================
 # Q3 — Top hospitals transformation
@@ -261,10 +265,24 @@ def transform_top_hospitals(
 
 def transform_condition_distribution(
     records: list[dict[str, Any]],
+    los_records: list[dict[str, Any]] | None = None,
 ) -> list[dict[str, Any]]:
     """
-    Calculate percentage share of encounters for each condition
-    and shape the result to the frozen API contract.
+    Combine Q4 condition-distribution results with Q5 average-LOS results.
+
+    Q4 provides:
+        - condition_name
+        - condition_category
+        - encounter_count
+
+    Q5 provides:
+        - condition_name
+        - condition_category
+        - avg_length_of_stay
+        - encounter_count
+
+    Pandas computes percentage_share from the Q4 encounter counts and
+    merges the Q5 average LOS into the final frozen API contract.
     """
 
     df = _dataframe(records)
@@ -286,6 +304,40 @@ def transform_condition_distribution(
             * 100
         )
 
+    # Merge Q5 average LOS into the Q4 distribution results.
+    if los_records:
+        los_df = _dataframe(los_records)
+
+        if not los_df.empty:
+            los_columns = [
+                "condition_name",
+                "condition_category",
+                "avg_length_of_stay",
+            ]
+
+            # Keep only columns that are actually available.
+            los_columns = [
+                column
+                for column in los_columns
+                if column in los_df.columns
+            ]
+
+            if (
+                "condition_name" in los_columns
+                and "condition_category" in los_columns
+                and "avg_length_of_stay" in los_columns
+            ):
+                los_df = los_df[los_columns]
+
+                df = df.merge(
+                    los_df,
+                    on=[
+                        "condition_name",
+                        "condition_category",
+                    ],
+                    how="left",
+                )
+
     required_columns = [
         "condition_name",
         "condition_category",
@@ -295,11 +347,7 @@ def transform_condition_distribution(
     ]
 
     if "avg_length_of_stay" not in df.columns:
-        # The Q4 query may provide average LOS under this name.
-        if "avg_los_days" in df.columns:
-            df["avg_length_of_stay"] = df["avg_los_days"]
-        else:
-            df["avg_length_of_stay"] = None
+        df["avg_length_of_stay"] = None
 
     for column in required_columns:
         if column not in df.columns:
@@ -456,148 +504,150 @@ def transform_demographics(
 # ============================================================================
 
 def transform_billing(
-    billing: dict[str, list[dict[str, Any]]],
+    billing: dict[str, Any],
 ) -> dict[str, Any]:
     """
     Transform billing analytics into the frozen BillingData API shape.
 
-    Billing statistics are calculated from valid billing records. The SQL
-    query provides the grouping/count information, while this layer ensures
-    the API receives the numeric billing aggregates required by the frozen
-    response contract.
+    The SQL query layer is responsible for applying filters and calculating
+    billing aggregates. This layer converts those results into the frozen
+    API response shape.
+
+    The SQL layer returns:
+        - by_insurance_provider
+        - by_admission_type
+        - above_average_billing
+        - above_average_summary
+
+    The detailed above-average result is intentionally limited to 100 rows,
+    so the summary is used for the actual above-average count and filtered
+    overall average.
     """
 
-    connection = get_connection()
-
-    try:
-        rows = connection.execute(
-            """
-            SELECT
-                insurance_provider,
-                admission_type,
-                billing_amount
-            FROM encounters
-            WHERE billing_is_valid = 1
-            """
-        ).fetchall()
-    finally:
-        connection.close()
-
-    billing_df = _dataframe(
-        [dict(row) for row in rows]
+    insurance_rows = billing.get(
+        "by_insurance_provider",
+        [],
     )
 
-    # ------------------------------------------------------------------
-    # Empty database
-    # ------------------------------------------------------------------
-
-    if billing_df.empty:
-        return {
-            "by_insurance_provider": [],
-            "by_admission_type": [],
-            "above_average": {
-                "above_average_count": None,
-                "overall_avg_billing": None,
-            },
-            "statistical_outliers": {
-                "outlier_count": None,
-                "lower_bound": None,
-                "upper_bound": None,
-            },
-            "excluded_invalid_billing_count": int(
-                get_data_quality_summary()["invalid_billing_rows"]
-            ),
-        }
-
-    billing_df["billing_amount"] = pd.to_numeric(
-        billing_df["billing_amount"],
-        errors="coerce",
-    )
-
-    billing_df = billing_df.dropna(
-        subset=["billing_amount"]
+    admission_rows = billing.get(
+        "by_admission_type",
+        [],
     )
 
     # ------------------------------------------------------------------
     # Billing by insurance provider
     # ------------------------------------------------------------------
 
-    insurance_df = (
-        billing_df
-        .groupby("insurance_provider", as_index=False)
-        .agg(
-            encounter_count=("billing_amount", "count"),
-            avg_billing=("billing_amount", "mean"),
-            total_billing=("billing_amount", "sum"),
-        )
+    insurance_df = _dataframe(
+        insurance_rows
     )
 
-    total_billing = insurance_df["total_billing"].sum()
-
-    if total_billing > 0:
-        insurance_df["pct_of_total_billing"] = (
-            insurance_df["total_billing"]
-            / total_billing
-            * 100
+    if not insurance_df.empty:
+        insurance_df = insurance_df.rename(
+            columns={
+                "valid_billing_encounters": "encounter_count",
+                "avg_billing_amount": "avg_billing",
+                "total_billing_amount": "total_billing",
+            }
         )
-    else:
-        insurance_df["pct_of_total_billing"] = 0.0
 
-    insurance_df = insurance_df.sort_values(
-        "total_billing",
-        ascending=False,
-    ).reset_index(drop=True)
+        total_billing = insurance_df["total_billing"].sum()
 
-    insurance_df = _round_numeric(
-        insurance_df,
-        2,
-    )
+        if total_billing > 0:
+            insurance_df["pct_of_total_billing"] = (
+                insurance_df["total_billing"]
+                / total_billing
+                * 100
+            )
+        else:
+            insurance_df["pct_of_total_billing"] = 0.0
+
+        insurance_df = _round_numeric(
+            insurance_df,
+            2,
+        )
 
     # ------------------------------------------------------------------
     # Billing by admission type
     # ------------------------------------------------------------------
 
-    admission_df = (
-        billing_df
-        .groupby("admission_type", as_index=False)
-        .agg(
-            encounter_count=("billing_amount", "count"),
-            avg_billing=("billing_amount", "mean"),
+    admission_df = _dataframe(
+        admission_rows
+    )
+
+    if not admission_df.empty:
+        admission_df = admission_df.rename(
+            columns={
+                "valid_billing_encounters": "encounter_count",
+                "avg_billing_amount": "avg_billing",
+                "total_billing_amount": "total_billing",
+            }
         )
-    )
 
-    admission_df = admission_df.sort_values(
-        "avg_billing",
-        ascending=False,
-    ).reset_index(drop=True)
+        # total_billing is not part of the frozen admission-type
+        # response, but it may be present in the SQL result.
+        if "total_billing" in admission_df.columns:
+            admission_df = admission_df.drop(
+                columns=["total_billing"]
+            )
 
-    admission_df = _round_numeric(
-        admission_df,
-        2,
-    )
+        admission_df = _round_numeric(
+            admission_df,
+            2,
+        )
 
     # ------------------------------------------------------------------
     # Above-average billing
     # ------------------------------------------------------------------
+    #
+    # The SQL layer returns:
+    #
+    #   above_average_billing -> detailed rows, limited to 100
+    #   above_average_summary -> actual count + filtered average
+    #
+    # Therefore DO NOT use len(above_average_billing) as the count.
+    # ------------------------------------------------------------------
 
-    overall_avg_billing = float(
-        billing_df["billing_amount"].mean()
+    above_average_summary = billing.get(
+        "above_average_summary",
+        [],
     )
 
-    above_average_count = int(
-        (
-            billing_df["billing_amount"]
-            > overall_avg_billing
-        ).sum()
-    )
+    if above_average_summary:
+        summary = above_average_summary[0]
+
+        above_average_count = summary.get(
+            "above_average_count"
+        )
+
+        overall_avg_billing = summary.get(
+            "overall_avg_billing"
+        )
+
+        if above_average_count is not None:
+            above_average_count = int(
+                above_average_count
+            )
+
+        if overall_avg_billing is not None:
+            overall_avg_billing = round(
+                float(overall_avg_billing),
+                2,
+            )
+    else:
+        above_average_count = 0
+        overall_avg_billing = None
 
     above_average = {
         "above_average_count": above_average_count,
-        "overall_avg_billing": round(
-            overall_avg_billing,
-            2,
-        ),
+        "overall_avg_billing": overall_avg_billing,
     }
+
+    # ------------------------------------------------------------------
+    # Statistical outliers
+    # ------------------------------------------------------------------
+
+    billing_outliers = get_billing_iqr_outliers()
 
     # ------------------------------------------------------------------
     # Data quality
@@ -612,36 +662,30 @@ def transform_billing(
     # ------------------------------------------------------------------
 
     return {
-        "by_insurance_provider": _records(
-            insurance_df
+        "by_insurance_provider": (
+            _records(insurance_df)
+            if not insurance_df.empty
+            else []
         ),
-        "by_admission_type": _records(
-            admission_df
+        "by_admission_type": (
+            _records(admission_df)
+            if not admission_df.empty
+            else []
         ),
         "above_average": above_average,
         "statistical_outliers": {
-            "outlier_count": None,
-            "lower_bound": None,
-            "upper_bound": None,
+            "outlier_count": billing_outliers["outlier_count"],
+            "lower_bound": billing_outliers["lower_bound"],
+            "upper_bound": billing_outliers["upper_bound"],
         },
         "excluded_invalid_billing_count": invalid_billing_count,
     }
-
-# ============================================================================
-# Q9 — Test-result distribution
-# ============================================================================
-
 def transform_test_results(
     records: list[dict[str, Any]],
 ) -> list[dict[str, Any]]:
-    """
-    Shape test-result distribution to the frozen TestResultRow contract.
-    """
+    """Shape test-result distribution by admission type."""
 
-    if not records:
-        return []
-
-    result = []
+    result: list[dict[str, Any]] = []
 
     for row in records:
         result.append({
@@ -654,6 +698,10 @@ def transform_test_results(
 
     return result
 
+
+# ============================================================================
+# Data-quality summary
+# ============================================================================
 
 # ============================================================================
 # Data-quality summary
@@ -932,16 +980,26 @@ def build_conditions(
     conn: Any,
     filters: Any,
 ) -> list[dict[str, Any]]:
-    """Dev A integration builder for condition distribution."""
+    """Dev A integration builder for condition distribution and LOS."""
 
     del conn
 
-    data = get_condition_distribution(
-        **_filter_kwargs(filters)
+    filter_kwargs = _filter_kwargs(filters)
+
+    # Q4: condition distribution
+    condition_data = get_condition_distribution(
+        **filter_kwargs
     )
 
+    # Q5: average length of stay by condition
+    los_data = get_los_by_condition_category(
+        **filter_kwargs
+    )
+
+    # Combine Q4 percentage-share data with Q5 average-LOS data.
     return transform_condition_distribution(
-        data
+        condition_data,
+        los_data,
     )
 
 
@@ -975,7 +1033,7 @@ def build_billing(
     )
 
     return transform_billing(
-        data
+        data,
     )
 
 

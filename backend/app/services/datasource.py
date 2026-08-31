@@ -71,14 +71,43 @@ def _resolve(module, endpoint: str) -> Optional[Callable[..., Any]]:
 
 
 def _row_count(data: Any) -> int:
+    """Return a meaningful row/encounter count for an endpoint payload."""
+
     if isinstance(data, list):
         return len(data)
+
     if isinstance(data, dict):
-        for key in ("total_encounters", "row_count"):
-            value = data.get(key)
-            if isinstance(value, int):
-                return value
+        # KPI-style payloads expose their encounter count directly.
+        total_encounters = data.get("total_encounters")
+        if isinstance(total_encounters, int):
+            return total_encounters
+
+        # Billing is a structured dictionary. Its insurance-provider rows
+        # represent grouped billing data, so use the sum of their valid
+        # encounter counts rather than returning the generic fallback of 1.
+        insurance_rows = data.get("by_insurance_provider")
+        if isinstance(insurance_rows, list):
+            total = 0
+            found_count = False
+
+            for row in insurance_rows:
+                if not isinstance(row, dict):
+                    continue
+
+                count = row.get("encounter_count")
+                if isinstance(count, int):
+                    total += count
+                    found_count = True
+
+            if found_count:
+                return total
+
+        row_count = data.get("row_count")
+        if isinstance(row_count, int):
+            return row_count
+
         return 1 if data else 0
+
     return 0
 
 

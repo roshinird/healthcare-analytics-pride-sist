@@ -50,6 +50,7 @@ def _build_filters(
     insurance_provider: str | None = None,
     gender: str | None = None,
     table_alias: str = "e",
+    condition_alias: str = "c",
 ) -> tuple[str, list[Any]]:
     """
     Build a parameterized WHERE clause for the frozen dashboard filters.
@@ -59,6 +60,9 @@ def _build_filters(
 
     The returned SQL fragment either contains no WHERE clause or starts
     with "WHERE". All values are passed separately as SQLite parameters.
+
+    The table_alias parameter allows the helper to work with either
+    encounters/ref_medical_condition joins or the enriched analytical view.
     """
 
     clauses: list[str] = []
@@ -73,7 +77,7 @@ def _build_filters(
         params.append(str(end_date))
 
     if condition is not None and condition.strip():
-        clauses.append("c.condition_name = ?")
+        clauses.append(f"{condition_alias}.condition_name = ?")
         params.append(condition.strip())
 
     if admission_type is not None and admission_type.strip():
@@ -134,6 +138,15 @@ def get_kpis(
         insurance_provider=insurance_provider,
         gender=gender,
     )
+
+    # _build_filters() normally targets condition_name using the
+    # supplied table alias. Q1 joins ref_medical_condition as `c`,
+    # so correct the condition predicate for this query.
+    if condition is not None and condition.strip():
+        where_sql = where_sql.replace(
+            "e.condition_name = ?",
+            "c.condition_name = ?",
+        )
 
     query = f"""
         SELECT
@@ -201,7 +214,11 @@ def get_admissions_trend(
         insurance_provider=insurance_provider,
         gender=gender,
     )
-
+    if condition is not None and condition.strip():
+        where_sql = where_sql.replace(
+            "e.condition_name = ?",
+            "c.condition_name = ?",
+        )
     query = f"""
         WITH monthly_admissions AS (
             SELECT
@@ -282,7 +299,11 @@ def get_top_hospitals(
         insurance_provider=insurance_provider,
         gender=gender,
     )
-
+    if condition is not None and condition.strip():
+        where_sql = where_sql.replace(
+            "e.condition_name = ?",
+            "c.condition_name = ?",
+        )
     query = f"""
         WITH hospital_counts AS (
             SELECT
@@ -339,7 +360,7 @@ def get_condition_distribution(
         Distribution of encounters across medical conditions.
 
     SQL concepts:
-        JOIN, GROUP BY, HAVING, aggregate functions, ORDER BY.
+        GROUP BY, HAVING, aggregate functions, ORDER BY.
 
     Percentage-share calculation is intentionally left to Pandas,
     per the frozen architecture.
@@ -352,24 +373,22 @@ def get_condition_distribution(
         admission_type=admission_type,
         insurance_provider=insurance_provider,
         gender=gender,
+        table_alias="e",
+        condition_alias="e"
     )
 
     query = f"""
         SELECT
-            c.condition_id,
-            c.condition_name,
-            c.condition_category,
-            COUNT(e.encounter_id) AS encounter_count
-        FROM ref_medical_condition AS c
-        JOIN encounters AS e
-            ON e.condition_id = c.condition_id
+            e.condition_name,
+            e.condition_category,
+            COUNT(*) AS encounter_count
+        FROM vw_encounter_enriched AS e
         {where_sql}
         GROUP BY
-            c.condition_id,
-            c.condition_name,
-            c.condition_category
-        HAVING COUNT(e.encounter_id) > 0
-        ORDER BY encounter_count DESC, c.condition_name;
+            e.condition_name,
+            e.condition_category
+        HAVING COUNT(*) > 0
+        ORDER BY encounter_count DESC, e.condition_name;
     """
 
     connection = get_connection()
@@ -379,7 +398,6 @@ def get_condition_distribution(
         return _rows_to_dicts(rows)
     finally:
         connection.close()
-
 
 # ============================================================================
 # Q5 — Average LOS by Condition Category and Condition
@@ -584,10 +602,13 @@ def get_billing_analysis(
         GROUP BY, aggregate functions, subquery, CASE, ORDER BY.
 
     Monetary analytics exclude billing_is_valid = 0.
+
+    The query applies all supplied filters consistently to the outer
+    queries and their subqueries.
     """
 
     # ------------------------------------------------------------------
-    # Q7a — Billing by insurance provider
+    # Build common filters
     # ------------------------------------------------------------------
 
     where_sql, params = _build_filters(
@@ -598,6 +619,18 @@ def get_billing_analysis(
         insurance_provider=insurance_provider,
         gender=gender,
     )
+
+    # _build_filters() uses e.condition_name, while these queries join
+    # ref_medical_condition as `c`.
+    if condition is not None and condition.strip():
+        where_sql = where_sql.replace(
+            "e.condition_name = ?",
+            "c.condition_name = ?",
+        )
+
+    # ------------------------------------------------------------------
+    # Q7a — Billing by insurance provider
+    # ------------------------------------------------------------------
 
     insurance_query = f"""
         SELECT
@@ -638,8 +671,11 @@ def get_billing_analysis(
     # ------------------------------------------------------------------
     # Q8 — Above-average billing encounters
     #
-    # The scalar subquery computes the filtered average. The outer query
-    # returns only valid encounters whose billing is above that average.
+    # The scalar subquery computes the average for the SAME filtered
+    # population as the outer query.
+    #
+    # LIMIT 100 is intentional because the detailed API result does not
+    # expose an unbounded list of above-average encounters.
     # ------------------------------------------------------------------
 
     above_average_query = f"""
@@ -670,9 +706,44 @@ def get_billing_analysis(
         LIMIT 100;
     """
 
-    # The filter parameters occur once in the outer query and once in
-    # the subquery, so SQLite receives both parameter sets in sequence.
-    above_average_params = params + params
+    # ------------------------------------------------------------------
+    # Q8 summary — actual count above the filtered average
+    #
+    # This is separate from above_average_query because that query is
+    # intentionally limited to 100 detailed rows.
+    # ------------------------------------------------------------------
+
+    above_average_summary_query = f"""
+        SELECT
+            COUNT(*) AS above_average_count
+        FROM encounters AS e
+        JOIN ref_medical_condition AS c
+            ON e.condition_id = c.condition_id
+        {where_sql}
+        {"AND" if where_sql else "WHERE"} e.billing_is_valid = 1
+        AND e.billing_amount > (
+            SELECT AVG(e2.billing_amount)
+            FROM encounters AS e2
+            JOIN ref_medical_condition AS c2
+                ON e2.condition_id = c2.condition_id
+            {where_sql.replace("e.", "e2.").replace("c.", "c2.")}
+            {"AND" if where_sql else "WHERE"} e2.billing_is_valid = 1
+        );
+    """
+
+    # ------------------------------------------------------------------
+    # Q8 summary — filtered overall average
+    # ------------------------------------------------------------------
+
+    overall_average_query = f"""
+        SELECT
+            ROUND(AVG(e.billing_amount), 2) AS overall_avg_billing
+        FROM encounters AS e
+        JOIN ref_medical_condition AS c
+            ON e.condition_id = c.condition_id
+        {where_sql}
+        {"AND" if where_sql else "WHERE"} e.billing_is_valid = 1;
+    """
 
     connection = get_connection()
 
@@ -689,13 +760,49 @@ def get_billing_analysis(
 
         above_average_rows = connection.execute(
             above_average_query,
-            above_average_params,
+            params + params,
         ).fetchall()
 
+        above_average_count_row = connection.execute(
+            above_average_summary_query,
+            params + params,
+        ).fetchone()
+
+        overall_average_row = connection.execute(
+            overall_average_query,
+            params,
+        ).fetchone()
+
+        above_average_count = (
+            int(above_average_count_row["above_average_count"])
+            if above_average_count_row is not None
+            and above_average_count_row["above_average_count"] is not None
+            else 0
+        )
+
+        overall_avg_billing = (
+            float(overall_average_row["overall_avg_billing"])
+            if overall_average_row is not None
+            and overall_average_row["overall_avg_billing"] is not None
+            else None
+        )
+
         return {
-            "by_insurance_provider": _rows_to_dicts(insurance_rows),
-            "by_admission_type": _rows_to_dicts(admission_type_rows),
-            "above_average_billing": _rows_to_dicts(above_average_rows),
+            "by_insurance_provider": _rows_to_dicts(
+                insurance_rows
+            ),
+            "by_admission_type": _rows_to_dicts(
+                admission_type_rows
+            ),
+            "above_average_billing": _rows_to_dicts(
+                above_average_rows
+            ),
+            "above_average_summary": [
+                {
+                    "above_average_count": above_average_count,
+                    "overall_avg_billing": overall_avg_billing,
+                }
+            ],
         }
 
     finally:
