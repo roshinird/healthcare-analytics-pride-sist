@@ -374,6 +374,7 @@ def get_condition_distribution(
         insurance_provider=insurance_provider,
         gender=gender,
         table_alias="e",
+        condition_alias="e"
     )
 
     query = f"""
